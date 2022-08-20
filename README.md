@@ -12,4 +12,4 @@ In the project directory, you can run:
 - `craco run eject`
 
 ## Notes:
-- [In dev environment useEffect with empty dependency array is triggered twice](https://www.techiediaries.com/react-18-useeffect/#:~:text=If%20you%20have%20just%20made,upgraded%20to%20React%20version%2018).
+- [In React version 18, in dev environment useEffect with empty dependency array is triggered twice](https://www.techiediaries.com/react-18-useeffect/#:~:text=If%20you%20have%20just%20made,upgraded%20to%20React%20version%2018)
