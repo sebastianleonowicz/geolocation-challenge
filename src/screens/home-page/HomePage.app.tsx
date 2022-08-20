@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
-import { LocationForm } from '../../components/location-form';
+import { LocationForm } from '@/components/location-form';
 
 export const HomePage = () => {
-	console.log('remount')
 	const [searchParams, setSearchParams] = useSearchParams();
 	const currentQuery = searchParams.get('query');
 	const [locationQuery, setLocationQuery] = useState<string>(currentQuery ? currentQuery : '');
@@ -20,7 +19,6 @@ export const HomePage = () => {
 	}, [locationQuery]);
 
 	useEffect(() => {
-		console.log('123', hasRequested);
 		if (currentQuery && !hasRequested) {
 			handleCheckLocation();
 			setHasRequested(true);
