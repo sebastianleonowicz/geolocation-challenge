@@ -1,11 +1,15 @@
 import React from 'react';
-import './App.css';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+
+import { HomePage } from "./screens/home-page";
 
 const App = () => {
   return (
-    <div className="App">
-      1123
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<HomePage />}/>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
