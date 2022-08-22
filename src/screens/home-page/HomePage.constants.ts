@@ -4,6 +4,6 @@ export const DEFAULT_MARKER_COORDINATES_1 = {
 }
 
 export const DEFAULT_MARKER_COORDINATES_2 = {
-	lat: 51.500,
+	lat: 51.51,
 	lng: -0.09,
 }
