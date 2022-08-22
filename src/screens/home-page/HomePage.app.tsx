@@ -1,71 +1,11 @@
-import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { MapContainer, TileLayer, Marker } from 'react-leaflet'
-import axios from 'axios';
+import { MapContainer, TileLayer } from 'react-leaflet'
 
 import './HomePage.styles.css';
-import { LocationForm } from '@/components/location-form';
-var osmtogeojson = require('osmtogeojson');
-
-const center = {
-	lat: 51.505,
-	lng: -0.09,
-}
-
-const center2 = {
-	lat: 51.500,
-	lng: -0.09,
-}
-
-interface Coordinates {
-	lat: number,
-	lng: number,
-}
-
-interface DraggableMarkerProps {
-	initialPosition: Coordinates
-}
-
-const getGeoJsonFeatures = async (minLon: number, minLat: number, maxLon: number, maxLat: number) => {
-	axios.get(
-		`https://www.openstreetmap.org/api/0.6/map?bbox=0.20,51.28,0.21,51.3`,
-		{
-			//@ts-ignore
-			'Content-Type': 'application/xml; charset=utf-8'
-		}
-	).then((response) => {
-		console.log(response.data)
-		let result = osmtogeojson(response.data);
-		console.log(result);
-	});
-}
-
-const DraggableMarker = ({ initialPosition }: DraggableMarkerProps) => {
-	const [position, setPosition] = useState(initialPosition)
-	console.log('initialPosition', initialPosition);
-	const markerRef = useRef(null)
-	const eventHandlers = useMemo(
-		() => ({
-			dragend() {
-				const marker = markerRef.current
-				if (marker != null) {
-					// @ts-ignore
-					setPosition(marker.getLatLng())
-				}
-			},
-		}),
-		[],
-	)
-
-	return (
-		<Marker
-			draggable={true}
-			eventHandlers={eventHandlers}
-			position={position}
-			ref={markerRef}>
-		</Marker>
-	)
-}
+import { LocationForm, DraggableMarker } from '@/components';
+import { getGeoJsonFeatures } from '@/api';
+import { DEFAULT_MARKER_COORDINATES_1, DEFAULT_MARKER_COORDINATES_2 } from './HomePage.constants';
 
 export const HomePage = () => {
 	const [searchParams, setSearchParams] = useSearchParams();
@@ -96,15 +36,15 @@ export const HomePage = () => {
 				locationQuery={locationQuery}
 				handleCheckLocation={handleCheckLocation}
 			/>
-			<MapContainer center={[51.505, -0.09]} zoom={13} scrollWheelZoom={false}>
+			<MapContainer center={DEFAULT_MARKER_COORDINATES_1} zoom={13} scrollWheelZoom={false}>
 				<TileLayer
 					attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 					url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
 				/>
-				<DraggableMarker key='1' initialPosition={center}/>
-				<DraggableMarker key='2' initialPosition={center2}/>
+				<DraggableMarker key='1' initialPosition={DEFAULT_MARKER_COORDINATES_1}/>
+				<DraggableMarker key='2' initialPosition={DEFAULT_MARKER_COORDINATES_2}/>
 			</MapContainer>
-			<button onClick={() => getGeoJsonFeatures(center.lng, center.lat, center.lng, center.lat)}>fetch geojson</button>
+			<button onClick={() => getGeoJsonFeatures(DEFAULT_MARKER_COORDINATES_1.lng, DEFAULT_MARKER_COORDINATES_1.lat, DEFAULT_MARKER_COORDINATES_1.lng, DEFAULT_MARKER_COORDINATES_1.lat)}>fetch geojson</button>
 		</div>
 	);
 }
