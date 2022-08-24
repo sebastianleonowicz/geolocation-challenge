@@ -4,10 +4,8 @@ import { MapContainer, TileLayer, FeatureGroup } from 'react-leaflet'
 import { EditControl } from 'react-leaflet-draw';
 
 import './HomePage.styles.css';
-import { DraggableMarker } from '@/components';
-import { getGeoJsonFeatures } from '@/api';
-import {useAppDispatch, useTypedSelector} from '@/store';
-import { changeMarkerCoordinates } from './HomePage.slice';
+import { useAppDispatch, useTypedSelector } from '@/store';
+import { changeMarkerCoordinates, fetchGeoJSON } from './HomePage.slice';
 import {DEFAULT_MARKER_COORDINATE_BOUNDS} from "@/screens/home-page/HomePage.constants";
 
 export const HomePage = () => {
@@ -52,8 +50,12 @@ export const HomePage = () => {
 						}}
 						onCreated={(e) => {
 							const bounds = e.layer.getBounds()
-							console.log('bounds', bounds);
-							dispatch(changeMarkerCoordinates(bounds))
+							const payload = {
+								northEast: bounds._northEast,
+								southWest: bounds._southWest
+							};
+
+							dispatch(changeMarkerCoordinates(payload))
 						}}
 						draw={{
 							circlemarker: false,
@@ -66,7 +68,7 @@ export const HomePage = () => {
 					/>
 				</FeatureGroup>
 			</MapContainer>
-			<button onClick={() => getGeoJsonFeatures(coordinateBounds.southWest.lng, coordinateBounds.southWest.lat, coordinateBounds.northEast.lng, coordinateBounds.northEast.lat)}>fetch geojson</button>
+			<button onClick={() => dispatch(fetchGeoJSON())}>fetch geojson</button>
 		</div>
 	);
 }

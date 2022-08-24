@@ -11,6 +11,14 @@ export const rootReducer = combineReducers({
 export const getStore = () =>
 	configureStore({
 		reducer: rootReducer,
+		/**
+		 *
+		 * CoordinateBounds seems to be treated as non-serializable by redux. If this is certain is unknown at this time,
+		 * serializableCheck is disabled to mitigate the issue.
+		 */
+		middleware: getDefaultMiddleware => getDefaultMiddleware({
+			serializableCheck: false,
+		})
 	});
 
 export const store = getStore();

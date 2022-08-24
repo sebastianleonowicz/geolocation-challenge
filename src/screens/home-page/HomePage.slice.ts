@@ -1,8 +1,9 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { DEFAULT_MARKER_COORDINATE_BOUNDS } from '@/screens/home-page/HomePage.constants';
+import { AppDispatch } from '@/store';
+import { getGeoJsonFeatures } from '@/api'
 
-//TODO: use LatLng from leaflet
 export interface Coordinates {
 	lat: number,
 	lng: number,
@@ -13,19 +14,43 @@ export interface CoordinateBounds {
 	southWest: Coordinates,
 }
 
-interface HomePageStateProps {
+interface HomePageState {
 	coordinateBounds: CoordinateBounds,
+	geoJson: Record<string, unknown> | null
 }
 
-export const initialState: HomePageStateProps = {
+type RootState = {
+	homePage: HomePageState
+}
+
+export const initialState: HomePageState= {
 	coordinateBounds: DEFAULT_MARKER_COORDINATE_BOUNDS,
+	geoJson: null,
 };
+
+export const fetchGeoJSON = createAsyncThunk<
+	Record<string, any>,
+	undefined,
+	{
+		dispatch: AppDispatch;
+		state: RootState;
+	}
+	>('homePage/fetchGeoJSON', async (_ = undefined, { getState }) => {
+		const { homePage: { coordinateBounds } } = getState();
+		return await getGeoJsonFeatures(
+			coordinateBounds.southWest.lng,
+			coordinateBounds.southWest.lat,
+			coordinateBounds.northEast.lng,
+			coordinateBounds.northEast.lat
+		);
+});
+
 
 export const homePageSlice = createSlice({
 	name: 'homePage',
 	initialState,
 	reducers: {
-		changeMarkerCoordinates(state: HomePageStateProps, { payload }: PayloadAction<CoordinateBounds>) {
+		changeMarkerCoordinates(state: HomePageState, { payload }: PayloadAction<CoordinateBounds>) {
 			return {
 				...state,
 				coordinateBounds: payload
@@ -33,6 +58,9 @@ export const homePageSlice = createSlice({
 		},
 	},
 	extraReducers(builder) {
+		builder.addCase(fetchGeoJSON.fulfilled, (state: HomePageState, { payload }) => {
+			state.geoJson = payload;
+		});
 	},
 });
 

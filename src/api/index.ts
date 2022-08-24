@@ -1,16 +1,15 @@
-import axios from "axios";
-import osmtogeojson from "osmtogeojson";
+import axios from 'axios';
+import osmtogeojson from 'osmtogeojson';
 
-export const getGeoJsonFeatures = async (minLon: number, minLat: number, maxLon: number, maxLat: number) => {
+export const getGeoJsonFeatures = async (minLng: number, minLat: number, maxLon: number, maxLat: number): Promise<Record<string, unknown>> => {
+	console.log('minLng', minLng, 'minLat', minLat, 'maxLon', maxLon, 'maxLat', maxLat)
 	const { data } = await axios.get(
-		`https://www.openstreetmap.org/api/0.6/map?bbox=${minLon},${minLat},${maxLon},${maxLat}`,
-		{
-			//@ts-ignore
-			'Content-Type': 'application/xml; charset=utf-8'
-		}
+		`https://www.openstreetmap.org/api/0.6/map?bbox=${minLng},${minLat},${maxLon},${maxLat}`,
 	)
 
-	const geoJSON = osmtogeojson(data)
-	console.log('geoJSON', geoJSON)
-	return geoJSON;
+	/**
+	 * missing osmtogeojson typings
+	 */
+	// @ts-ignore
+	return osmtogeojson(data);
 }
