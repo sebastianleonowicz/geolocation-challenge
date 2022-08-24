@@ -1,47 +1,34 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { DEFAULT_MARKER_COORDINATES_1, DEFAULT_MARKER_COORDINATES_2 } from '@/screens/home-page/HomePage.constants';
+import { DEFAULT_MARKER_COORDINATE_BOUNDS } from '@/screens/home-page/HomePage.constants';
 
+//TODO: use LatLng from leaflet
 export interface Coordinates {
 	lat: number,
 	lng: number,
 }
 
-export interface MarkerMetadata extends Coordinates {
-	index: number,
+export interface CoordinateBounds {
+	northEast: Coordinates,
+	southWest: Coordinates,
 }
 
 interface HomePageStateProps {
-	markerOneCoordinates: Coordinates,
-	markerTwoCoordinates: Coordinates,
+	coordinateBounds: CoordinateBounds,
 }
 
 export const initialState: HomePageStateProps = {
-	markerOneCoordinates: DEFAULT_MARKER_COORDINATES_1,
-	markerTwoCoordinates: DEFAULT_MARKER_COORDINATES_2,
+	coordinateBounds: DEFAULT_MARKER_COORDINATE_BOUNDS,
 };
 
 export const homePageSlice = createSlice({
 	name: 'homePage',
 	initialState,
 	reducers: {
-		changeMarkerCoordinates(state: HomePageStateProps, { payload }: PayloadAction<MarkerMetadata>) {
-			if (payload.index === 0) {
-				return {
-					...state,
-					markerOneCoordinates: {
-						lat: payload.lat,
-						lng: payload.lng,
-					}
-				}
-			}
-
+		changeMarkerCoordinates(state: HomePageStateProps, { payload }: PayloadAction<CoordinateBounds>) {
 			return {
 				...state,
-				markerTwoCoordinates: {
-					lat: payload.lat,
-					lng: payload.lng,
-				}
+				coordinateBounds: payload
 			}
 		},
 	},
