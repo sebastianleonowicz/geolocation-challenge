@@ -15,3 +15,8 @@
     font-size: 1.6rem;
     line-height: 2rem;
 }
+
+.datasetDisplay_featureList {
+    overflow: scroll;
+    height: calc(100% - 10rem);
+}

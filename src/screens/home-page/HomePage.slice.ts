@@ -17,7 +17,8 @@ export interface CoordinateBounds {
 
 interface HomePageState {
 	coordinateBounds: CoordinateBounds,
-	geoJson: FeatureCollection | null
+	geoJson: FeatureCollection | null,
+	showSpinner: boolean,
 }
 
 type RootState = {
@@ -27,6 +28,7 @@ type RootState = {
 export const initialState: HomePageState= {
 	coordinateBounds: DEFAULT_MARKER_COORDINATE_BOUNDS,
 	geoJson: null,
+	showSpinner: false,
 };
 
 export const fetchGeoJSON = createAsyncThunk<
@@ -54,13 +56,22 @@ export const homePageSlice = createSlice({
 		changeMarkerCoordinates(state: HomePageState, { payload }: PayloadAction<CoordinateBounds>) {
 			return {
 				...state,
-				coordinateBounds: payload
+				coordinateBounds: payload,
+				geoJson: null,
 			}
 		},
 	},
 	extraReducers(builder) {
 		builder.addCase(fetchGeoJSON.fulfilled, (state: HomePageState, { payload }) => {
 			state.geoJson = payload;
+			state.showSpinner = false;
+		});
+		builder.addCase(fetchGeoJSON.pending, (state: HomePageState) => {
+			state.showSpinner = true;
+		});
+		builder.addCase(fetchGeoJSON.rejected, (state: HomePageState, { payload }) => {
+			console.log('payload', payload);
+			state.showSpinner = false;
 		});
 	},
 });

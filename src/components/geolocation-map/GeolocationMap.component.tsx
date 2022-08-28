@@ -13,7 +13,13 @@ export const GeolocationMap = () => {
     const dispatch = useAppDispatch();
 
     return (
-        <MapContainer center={[DEFAULT_MARKER_COORDINATE_BOUNDS.southWest.lat, DEFAULT_MARKER_COORDINATE_BOUNDS.southWest.lng]} zoom={13} scrollWheelZoom={false} doubleClickZoom touchZoom>
+        <MapContainer
+            center={[DEFAULT_MARKER_COORDINATE_BOUNDS.southWest.lat, DEFAULT_MARKER_COORDINATE_BOUNDS.southWest.lng]}
+            zoom={13}
+            scrollWheelZoom={true}
+            doubleClickZoom
+            touchZoom
+        >
             <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -39,7 +45,7 @@ export const GeolocationMap = () => {
                         marker: false,
                         polygon: false,
                         polyline: false,
-                        rectangle: { metric: true},
+                        rectangle: { metric: true },
                         circle: false,
                     }}
                 />
