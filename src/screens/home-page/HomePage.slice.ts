@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { FeatureCollection } from 'geojson';
 
 import { DEFAULT_MARKER_COORDINATE_BOUNDS } from '@/screens/home-page/HomePage.constants';
 import { AppDispatch } from '@/store';
@@ -16,7 +17,7 @@ export interface CoordinateBounds {
 
 interface HomePageState {
 	coordinateBounds: CoordinateBounds,
-	geoJson: Record<string, unknown> | null
+	geoJson: FeatureCollection | null
 }
 
 type RootState = {
@@ -29,7 +30,7 @@ export const initialState: HomePageState= {
 };
 
 export const fetchGeoJSON = createAsyncThunk<
-	Record<string, any>,
+	FeatureCollection,
 	undefined,
 	{
 		dispatch: AppDispatch;

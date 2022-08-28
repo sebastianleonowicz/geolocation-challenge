@@ -5,6 +5,6 @@ export const DEFAULT_MARKER_COORDINATE_BOUNDS = {
 	},
 	northEast: {
 		lat: 51.51,
-		lng: -0.09,
+		lng: -0.08,
 	}
 }

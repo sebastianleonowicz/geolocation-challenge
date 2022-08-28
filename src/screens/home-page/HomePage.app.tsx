@@ -2,12 +2,9 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import './HomePage.styles.css';
-import { useAppDispatch } from '@/store';
-import { fetchGeoJSON } from './HomePage.slice';
-import { GeolocationMap } from '@/components';
+import { GeolocationMap, DatasetDisplay } from '@/components';
 
 export const HomePage = () => {
-	const dispatch = useAppDispatch();
 	const [searchParams, setSearchParams] = useSearchParams();
 	const currentQuery = searchParams.get('query');
 	const [locationQuery, ,] = useState<string>(currentQuery ? currentQuery : '');
@@ -31,8 +28,7 @@ export const HomePage = () => {
 	return (
 		<main className='app'>
 			<aside className='datasetDisplay'>
-				placeholder
-				<button onClick={() => dispatch(fetchGeoJSON())}>fetch geojson</button>
+				<DatasetDisplay />
 			</aside>
 			<GeolocationMap />
 		</main>
