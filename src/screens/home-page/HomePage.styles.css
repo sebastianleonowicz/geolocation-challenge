@@ -1,4 +1,14 @@
+.app {
+    width: inherit;
+    height: inherit;
+    display: flex;
+}
+
+.datasetDisplay {
+    width: 25%;
+}
+
 .leaflet-container {
-    width: 700px;
-    height: 700px;
+    width: 75%;
+    height: 100%;
 }

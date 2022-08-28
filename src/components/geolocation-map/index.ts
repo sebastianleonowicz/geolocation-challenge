@@ -1,0 +1,1 @@
+export  { GeolocationMap } from './GeolocationMap.component';
